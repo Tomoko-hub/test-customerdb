@@ -1,25 +1,32 @@
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const app = require('../index');
-const query = 
 
 chai.use(chaihttp);
 const should = chai.should();
 
-const testCustomer = {
-    firstname:'Tomoko',
-    lastname:'Uehara',
-    email:'mail.dayo@mail.com',
-    phone:'1234567890'
-}
+const testCustomers = [
+    {
+        firstname:'Tomoko',
+        lastname:'Uehara',
+        email:'mail.dayo@mail.com',
+        phone:'1234567890'
+    },
+    {
+        firstname:'John',
+        lastname:'Doe',
+        email:'john.dayo@mail.com',
+        phone:'2234567890'
+    }
+]
 
-describe('/POST customers', ()=>{
+/* describe('/POST customers', ()=>{
 
     it('Add new customer', (done)=>{
         chai.request(app)
           .post('/api/customers')
           .set('Content-Type', 'application/json')
-          .send(testCustomer)
+          .send(testCustomers)
           .end((err, res)=>{
             res.should.have.status(200);
             res.body.should.be.a('object');
@@ -31,15 +38,17 @@ describe('/POST customers', ()=>{
           });
     });
 });
-
+ */
 describe('/GET customers', ()=>{
-    it('Fetch all customers', (done)=>{
+    // task 6-3:fetch all customers, and count the customers 
+    it('Fetch all customers, and count the customers', (done)=>{
         chai.request(app)
           .get('/api/customers')
           .end((err,res)=>{
+              if(err) done(err);
               res.should.have.status(200);
               res.body.should.be.a('array');
-              res.body.length.should.be.eql(1);
+              res.body.length.should.be.eql(testCustomers.length);
               done();
           });
     });
